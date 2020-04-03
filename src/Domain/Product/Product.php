@@ -5,7 +5,7 @@ namespace App\Domain\Product;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Infrastructure\Product\Repository\ProductRepository")
+ * @ORM\Entity(repositoryClass="App\Infrastructure\Product\Repository\DoctrineProductRepository")
  */
 class Product
 {
@@ -30,7 +30,6 @@ class Product
      * @ORM\Column(type="float")
      */
     private $distance;
-
 
     public function getId(): ?int
     {

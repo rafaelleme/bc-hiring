@@ -5,14 +5,14 @@ namespace App\Domain\Carrier;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Infrastructure\Carrier\Repository\CarrierRepository")
+ * @ORM\Entity(repositoryClass="App\Infrastructure\Carrier\Repository\DoctrineCarrierRepository")
  */
 class Carrier
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @ORM\Embedded(class="", columnPrefix=false)
      */
     private $id;
 
