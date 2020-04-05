@@ -3,10 +3,19 @@
 namespace App\Infrastructure\Carrier\Repository;
 
 use App\Domain\Carrier\Carrier;
-use App\Domain\Carrier\Repository\CarrierRepository;
-use App\Infrastructure\Shared\Repository\DoctrineRepository;
+use Doctrine\ORM\EntityManager;
 
-class DoctrineCarrierRepository extends DoctrineRepository
+class DoctrineCarrierRepository
 {
     protected $entity = Carrier::class;
+
+    private $repository;
+
+    private $em;
+
+    public function __construct(EntityManager $em)
+    {
+        $this->em = $em;
+        $this->repository = $this->em->getRepository($this->entity);
+    }
 }

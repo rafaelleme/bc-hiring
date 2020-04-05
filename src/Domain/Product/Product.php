@@ -2,19 +2,20 @@
 
 namespace App\Domain\Product;
 
+use App\Domain\Shared\Entity\DomainEntity;
+use App\Domain\Shared\Entity\EntitySerializer;
+use App\Domain\Shared\Vo\Id;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Infrastructure\Product\Repository\DoctrineProductRepository")
+ * @ORM\Entity()
+ * @property string name
+ * @property float weight
+ * @property float distance
  */
-class Product
+class Product extends DomainEntity implements \JsonSerializable
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    use EntitySerializer;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -31,9 +32,17 @@ class Product
      */
     private $distance;
 
-    public function getId(): ?int
+    public function __construct(
+        string $name,
+        float $weight,
+        float $distance
+    )
     {
-        return $this->id;
+        parent::__construct(new Id());
+        $this->name = $name;
+        $this->weight = $weight;
+        $this->distance = $distance;
+
     }
 
     public function getName(): ?string
@@ -70,5 +79,15 @@ class Product
         $this->distance = $distance;
 
         return $this;
+    }
+
+    protected function serialize(): array
+    {
+        return [
+            'id',
+            'name',
+            'weight',
+            'distance'
+        ];
     }
 }

@@ -3,9 +3,25 @@
 namespace App\Infrastructure\Product\Repository;
 
 use App\Domain\Product\Product;
-use App\Infrastructure\Shared\Repository\DoctrineRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 
-class DoctrineProductRepository extends DoctrineRepository
+/**
+ * @property mixed entity
+ * @property EntityManager em
+ * @property EntityRepository repository
+ */
+class DoctrineProductRepository
 {
-    protected $entity = Product::class;
+    private $entity = Product::class;
+
+    private $repository;
+
+    private $em;
+
+    public function __construct(EntityManager $em)
+    {
+        $this->em = $em;
+        $this->repository = $this->em->getRepository($this->entity);
+    }
 }
