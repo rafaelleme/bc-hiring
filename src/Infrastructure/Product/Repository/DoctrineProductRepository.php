@@ -3,6 +3,8 @@
 namespace App\Infrastructure\Product\Repository;
 
 use App\Domain\Product\Product;
+use App\Domain\Product\Repository\ProductRepository;
+use App\Domain\Shared\Vo\Id;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 
@@ -11,7 +13,7 @@ use Doctrine\ORM\EntityRepository;
  * @property EntityManager em
  * @property EntityRepository repository
  */
-class DoctrineProductRepository
+class DoctrineProductRepository implements ProductRepository
 {
     private $entity = Product::class;
 
@@ -23,5 +25,20 @@ class DoctrineProductRepository
     {
         $this->em = $em;
         $this->repository = $this->em->getRepository($this->entity);
+    }
+
+    public function findAll(): ?array
+    {
+        // TODO: Implement findAll() method.
+    }
+
+    public function findById(Id $id): ?Product
+    {
+        // TODO: Implement findById() method.
+    }
+
+    public function persist(Product $product): Product
+    {
+        // TODO: Implement persist() method.
     }
 }
