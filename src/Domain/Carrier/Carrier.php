@@ -2,19 +2,20 @@
 
 namespace App\Domain\Carrier;
 
+use App\Domain\Shared\Entity\DomainEntity;
+use App\Domain\Shared\Entity\EntitySerializer;
+use App\Domain\Shared\Vo\Id;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Infrastructure\Carrier\Repository\DoctrineCarrierRepository")
+ * @ORM\Entity()
+ * @property string name
+ * @property float fixValue
+ * @property float valueDistanceKilo
  */
-class Carrier
+class Carrier extends DomainEntity implements \JsonSerializable
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Embedded(class="", columnPrefix=false)
-     */
-    private $id;
+    use EntitySerializer;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -22,18 +23,26 @@ class Carrier
     private $name;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float",name="fix_value")
      */
-    private $fix_value;
+    private $fixValue;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float",name="value_distance_kilo")
      */
-    private $value_distance_kilo;
+    private $valueDistanceKilo;
 
-    public function getId(): ?int
+    public function __construct(
+        string $name,
+        float $fixValue,
+        float $valueDistanceKilo
+    )
     {
-        return $this->id;
+        parent::__construct(new Id());
+        $this->name = $name;
+        $this->fixValue = $fixValue;
+        $this->valueDistanceKilo = $valueDistanceKilo;
+
     }
 
     public function getName(): ?string
@@ -50,25 +59,35 @@ class Carrier
 
     public function getFixValue(): ?float
     {
-        return $this->fix_value;
+        return $this->fixValue;
     }
 
-    public function setFixValue(float $fix_value): self
+    public function setFixValue(float $fixValue): self
     {
-        $this->fix_value = $fix_value;
+        $this->fixValue = $fixValue;
 
         return $this;
     }
 
     public function getValueDistanceKilo(): ?float
     {
-        return $this->value_distance_kilo;
+        return $this->valueDistanceKilo;
     }
 
-    public function setValueDistanceKilo(float $value_distance_kilo): self
+    public function setValueDistanceKilo(float $valueDistanceKilo): self
     {
-        $this->value_distance_kilo = $value_distance_kilo;
+        $this->valueDistanceKilo = $valueDistanceKilo;
 
         return $this;
+    }
+
+    protected function serialize(): array
+    {
+        return [
+            'id',
+            'name',
+            'fixValue',
+            'valueDistanceKilo'
+        ];
     }
 }

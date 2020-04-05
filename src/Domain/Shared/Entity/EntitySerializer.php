@@ -17,17 +17,18 @@ trait EntitySerializer
         $res = [];
 
         foreach ($serializableFields as $field) {
-            $field = 'get' . ucfirst($field);
-            if (in_array($field, $classMethods)) {
-                $objectHasValue = $this->checkIfObjectHasValueMethod($this->{$field}());
-                $underscoreField = $this->camelCaseToUnderscore($field);
+            $methodField = self::toMethod($field);
 
-                if ($this->{$field}() instanceof ArrayCollection) {
-                    $res[$underscoreField] = $this->{$field}()->toArray();
+            if (in_array($methodField, $classMethods)) {
+                $objectHasValue = $this->checkIfObjectHasValueMethod($this->{$methodField}());
+                $underscoreField = $this->camelCaseToUnderscore($methodField);
+
+                if ($this->{$methodField}() instanceof ArrayCollection) {
+                    $res[$underscoreField] = $this->{$methodField}()->toArray();
                     continue;
                 }
 
-                $res[$underscoreField] = $objectHasValue ? $this->{$field}()->value() : $this->{$field}();
+                $res[$underscoreField] = $objectHasValue ? $this->{$methodField}()->value() : $this->{$methodField}();
             }
         }
 
@@ -45,8 +46,13 @@ trait EntitySerializer
         return false;
     }
 
-    public function camelCaseToUnderscore($input)
+    public function camelCaseToUnderscore($input): ?string
     {
         return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', str_replace('get','',$input)));
+    }
+
+    public static function toMethod(string $field): ?string
+    {
+        return 'get' . ucfirst($field);
     }
 }
