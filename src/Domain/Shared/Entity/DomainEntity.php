@@ -26,7 +26,7 @@ abstract class DomainEntity implements \JsonSerializable
     /**
      * @return Id
      */
-    public function getId(): Id
+    public function getId(): string
     {
         return $this->id;
     }

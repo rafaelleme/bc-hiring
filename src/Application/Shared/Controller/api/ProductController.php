@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\api;
+namespace App\Application\Shared\Controller\api;
 
 use App\Domain\Product\Product;
 use App\Domain\Shared\Vo\Id;

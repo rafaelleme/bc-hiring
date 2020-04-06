@@ -7,6 +7,7 @@ use App\Domain\Product\Repository\ProductRepository;
 use App\Domain\Shared\Vo\Id;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Exception;
 
 /**
  * @property mixed entity
@@ -29,16 +30,31 @@ class DoctrineProductRepository implements ProductRepository
 
     public function findAll(): ?array
     {
-        // TODO: Implement findAll() method.
+        return $this->repository
+            ->createQueryBuilder('e')
+            ->getQuery()
+            ->getResult();
     }
 
-    public function findById(Id $id): ?Product
+    public function findById(Id $id): ?object
     {
-        // TODO: Implement findById() method.
+        return $this->repository
+            ->find($id->getValue());
     }
 
+    /**
+     * @param Product $product
+     * @return Product
+     * @throws Exception
+     */
     public function persist(Product $product): Product
     {
-        // TODO: Implement persist() method.
+        try {
+            $this->em->persist($product);
+            $this->em->flush();
+            return $product;
+        } catch (Exception $e) {
+            throw new Exception(sprintf('It was not possible to persist given. An error has occurred %s', $e->getMessage()));
+        }
     }
 }

@@ -8,6 +8,6 @@ use App\Domain\Shared\Vo\Id;
 interface ProductRepository
 {
     public function findAll(): ?array;
-    public function findById(Id $id): ?Product;
+    public function findById(Id $id): ?object;
     public function persist(Product $product): Product;
 }

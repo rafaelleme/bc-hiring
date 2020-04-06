@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\api;
+namespace App\Application\Shared\Controller\api;
 
 use App\Domain\Carrier\Carrier;
 use App\Infrastructure\Carrier\Repository\DoctrineCarrierRepository;
