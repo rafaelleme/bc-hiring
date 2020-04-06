@@ -4,10 +4,12 @@ namespace App\Application\Shared\Controller\api;
 
 use App\Application\Carrier\Request\CarrierRequest;
 use App\Application\Carrier\Service\CreateCarrierService;
+use App\Application\Carrier\Service\ListCostService;
 use App\Application\Carrier\Service\RemoveCarrierService;
 use App\Application\Carrier\Service\UpdateCarrierService;
 use App\Domain\Shared\Vo\Id;
 use App\Infrastructure\Carrier\Repository\DoctrineCarrierRepository;
+use Cassandra\Collection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -88,6 +90,7 @@ class CarrierController extends AbstractController
     /**
      * @param string $id
      * @param Request $request
+     * @param UpdateCarrierService $service
      * @return JsonResponse
      * @Route("/carrier/{id}", name="carrier_update", methods={"PUT"})
      */
@@ -101,5 +104,20 @@ class CarrierController extends AbstractController
             $carrier = call_user_func($service, new Id($id), $data);
 
         return $this->json($carrier, 200);
+    }
+
+    /**
+     * @param ListCostService $service
+     * @return JsonResponse
+     * @Route("/carrier-list-costs", name="listCosts", methods={"GET"})
+     */
+    public function listCosts(ListCostService $service)
+    {
+        $list = [];
+
+        if (is_callable($service))
+            $list = $service();
+
+        return $this->json($list, 200);
     }
 }

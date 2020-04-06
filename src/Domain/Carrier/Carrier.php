@@ -2,6 +2,7 @@
 
 namespace App\Domain\Carrier;
 
+use App\Domain\Product\Product;
 use App\Domain\Shared\Entity\DomainEntity;
 use App\Domain\Shared\Entity\EntitySerializer;
 use App\Domain\Shared\Vo\Id;
@@ -89,5 +90,15 @@ class Carrier extends DomainEntity implements \JsonSerializable
             'fixValue',
             'valueDistanceKilo'
         ];
+    }
+
+    public function calculateCost(Product $product): float
+    {
+        return $this->fixValue + $this->calculateValueDistanceKilo($product->calculateWeightDistance());
+    }
+
+    private function calculateValueDistanceKilo(float $weightDistance): float
+    {
+        return $this->valueDistanceKilo * $weightDistance;
     }
 }

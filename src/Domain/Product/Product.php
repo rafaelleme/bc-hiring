@@ -90,4 +90,9 @@ class Product extends DomainEntity implements \JsonSerializable
             'distance'
         ];
     }
+
+    public function calculateWeightDistance(): float
+    {
+        return $this->weight * $this->distance;
+    }
 }
