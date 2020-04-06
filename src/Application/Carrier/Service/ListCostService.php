@@ -52,6 +52,17 @@ class ListCostService
             }
         }
 
+        $result = $this->orderByAsc($result);
+
         return $result;
+    }
+
+    private function orderByAsc(array $arr): array
+    {
+        usort($arr, function (array $a, array $b) {
+            return $a['cost'] > $b['cost'];
+        });
+
+        return $arr;
     }
 }
