@@ -1,0 +1,36 @@
+version: '3.3'
+
+volumes:
+  bc-db:
+    external: true
+
+networks:
+  bc:
+    external: true
+
+services:
+  # mysql 5.7
+  bc-db:
+    image: mysql:5.7
+    volumes:
+      - bc-db:/var/lib/mysql
+    ports:
+      - '33065:3306'
+    environment:
+      - 'MYSQL_DATABASE=hiring'
+      - 'MYSQL_USER=homestead'
+      - 'MYSQL_PASSWORD=secret'
+      - 'MYSQL_ALLOW_EMPTY_PASSWORD=true'
+    networks:
+      - bc
+  # application php 7.4 + ngix configured
+  app:
+    image: ambientum/php:7.4-nginx
+    volumes:
+      - '.:/var/www/app'
+    ports:
+      - '3065:8080'
+    networks:
+      - bc
+    depends_on:
+      - bc-db
