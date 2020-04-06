@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\Table(name="carriers")
  * @property string name
+ * @property CarrierConfig config
  * @property ArrayCollection configs
  */
 class Carrier extends DomainEntity implements \JsonSerializable
@@ -44,6 +45,17 @@ class Carrier extends DomainEntity implements \JsonSerializable
         $this->name = $name;
 
         return $this;
+    }
+
+    public function setConfig(CarrierConfig $carrierConfig): self
+    {
+        $this->config = $carrierConfig;
+        return $this;
+    }
+
+    public function getConfig(): CarrierConfig
+    {
+        return $this->config;
     }
 
     public function getConfigs()

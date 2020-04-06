@@ -32,9 +32,9 @@ class CarrierConfig extends DomainEntity
     private float $minWeight;
 
     /**
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="float", options={"default": 10000})
      */
-    private ?float $maxWeight;
+    private float $maxWeight;
 
     /**
      * @ORM\Column(type="float",name="fix_value")
@@ -48,7 +48,7 @@ class CarrierConfig extends DomainEntity
 
     public function __construct(
         float $minWeight,
-        ?float $maxWeight,
+        float $maxWeight,
         float $fixValue,
         float $valueDistanceKilo
     )
@@ -82,12 +82,12 @@ class CarrierConfig extends DomainEntity
         return $this;
     }
 
-    public function getMaxWeight(): ?float
+    public function getMaxWeight(): float
     {
         return $this->maxWeight;
     }
 
-    public function setMaxWeight(?float $maxWeight = null): self
+    public function setMaxWeight(float $maxWeight): self
     {
         $this->maxWeight = $maxWeight;
         return $this;

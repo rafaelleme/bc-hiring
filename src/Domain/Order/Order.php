@@ -87,6 +87,24 @@ class Order extends DomainEntity implements \JsonSerializable
         return $this;
     }
 
+    public function calculateCost(): float
+    {
+        $fixValue = $this->carrier->getConfig()->getFixValue();
+
+        $partialCost = $this->calculateParcialCost();
+
+        return $fixValue + $partialCost;
+    }
+
+    private function calculateParcialCost(): float
+    {
+        $weight = $this->product->getWeight();
+        $distance = $this->distance;
+        $value = $this->carrier->getConfig()->getValueDistanceKilo();
+
+        return $weight * $distance * $value;
+    }
+
     public function jsonSerialize()
     {
         return [
