@@ -6,6 +6,8 @@ use App\Domain\Product\Product;
 use App\Domain\Shared\Entity\DomainEntity;
 use App\Domain\Shared\Entity\EntitySerializer;
 use App\Domain\Shared\Vo\Id;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,25 +15,29 @@ use Doctrine\ORM\Mapping as ORM;
  * @property string name
  * @property float fixValue
  * @property float valueDistanceKilo
+ * @property ArrayCollection configs
  */
 class Carrier extends DomainEntity implements \JsonSerializable
 {
-    use EntitySerializer;
-
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="float",name="fix_value")
      */
-    private $fixValue;
+    private float $fixValue;
 
     /**
      * @ORM\Column(type="float",name="value_distance_kilo")
      */
-    private $valueDistanceKilo;
+    private float $valueDistanceKilo;
+
+    /**
+     * @ORM\OneToMany(targetEntity="CarrierConfig", mappedBy="carrier")
+     */
+    protected Collection $configs;
 
     public function __construct(
         string $name,
@@ -43,7 +49,7 @@ class Carrier extends DomainEntity implements \JsonSerializable
         $this->name = $name;
         $this->fixValue = $fixValue;
         $this->valueDistanceKilo = $valueDistanceKilo;
-
+        $this->configs = new ArrayCollection();
     }
 
     public function getName(): ?string
@@ -82,14 +88,15 @@ class Carrier extends DomainEntity implements \JsonSerializable
         return $this;
     }
 
-    protected function serialize(): array
+    public function getConfigs(): Collection
     {
-        return [
-            'id',
-            'name',
-            'fixValue',
-            'valueDistanceKilo'
-        ];
+        return $this->configs;
+    }
+
+    public function setConfigs(ArrayCollection $configs): self
+    {
+        $this->configs = $configs;
+        return $this;
     }
 
     public function calculateCost(Product $product): float
@@ -100,5 +107,19 @@ class Carrier extends DomainEntity implements \JsonSerializable
     private function calculateValueDistanceKilo(float $weightDistance): float
     {
         return $this->valueDistanceKilo * $weightDistance;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'fixValue' => $this->getFixValue(),
+            'valueDistanceKilo' => $this->getValueDistanceKilo(),
+            'configs' => $this->getConfigs()->toArray()
+        ];
     }
 }

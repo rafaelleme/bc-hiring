@@ -9,7 +9,6 @@ use App\Application\Carrier\Service\RemoveCarrierService;
 use App\Application\Carrier\Service\UpdateCarrierService;
 use App\Domain\Shared\Vo\Id;
 use App\Infrastructure\Carrier\Repository\DoctrineCarrierRepository;
-use Cassandra\Collection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
