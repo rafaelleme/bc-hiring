@@ -13,7 +13,7 @@ abstract class DomainEntity implements \JsonSerializable
     /**
      * @var Id
      * @ORM\Id
-     * @ORM\Column(type="uuid", unique=true)
+     * @ORM\Column(type="string", unique=true)
      * @ORM\GeneratedValue(strategy="NONE")
      */
     protected $id;
