@@ -57,4 +57,14 @@ class DoctrineProductRepository implements ProductRepository
             throw new Exception(sprintf('It was not possible to persist given. An error has occurred %s', $e->getMessage()));
         }
     }
+
+    public function remove(Product $product): void
+    {
+        try {
+            $this->em->remove($product);
+            $this->em->flush();
+        } catch (\Throwable $throwable) {
+            throw new \Exception($throwable->getMessage());
+        }
+    }
 }

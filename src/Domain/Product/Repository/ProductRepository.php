@@ -10,4 +10,5 @@ interface ProductRepository
     public function findAll(): ?array;
     public function findById(Id $id): ?object;
     public function persist(Product $product): Product;
+    public function remove(Product $product): void;
 }
