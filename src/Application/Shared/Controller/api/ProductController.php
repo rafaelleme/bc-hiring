@@ -3,6 +3,7 @@
 namespace App\Controller\api;
 
 use App\Domain\Product\Product;
+use App\Domain\Shared\Vo\Id;
 use App\Infrastructure\Product\Repository\DoctrineProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -32,8 +33,30 @@ class ProductController extends AbstractController
      */
     public function index(Request $request)
     {
-        $custom = new Product('Custom product', 15.4,14.4);
+        $products = $this->repository->findAll();
 
-        return $this->json($custom, 200);
+        return $this->json($products, 200);
+    }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
+     * @Route("/product/{id}", name="product_find", methods={"GET"})
+     */
+    public function find(string $id)
+    {
+        $product = $this->repository->findById(new Id($id));
+
+        return $this->json($product, 200);
+    }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
+     * @Route("/product/{id}", name="product_find", methods={"GET"})
+     */
+    public function store()
+    {
+
     }
 }
