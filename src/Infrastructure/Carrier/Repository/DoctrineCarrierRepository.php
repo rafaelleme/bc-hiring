@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityRepository;
 use Exception;
 
 /**
+ * @property mixed entity
  * @property EntityRepository repository
  * @property EntityManager em
  */
@@ -17,9 +18,9 @@ class DoctrineCarrierRepository implements CarrierRepository
 {
     protected $entity = Carrier::class;
 
-    private $repository;
+    private EntityRepository $repository;
 
-    private $em;
+    private EntityManager $em;
 
     public function __construct(EntityManager $em)
     {

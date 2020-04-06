@@ -6,7 +6,7 @@ use App\Domain\Shared\Vo\Id;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @property Id id
+ * @property string id
  */
 abstract class DomainEntity implements \JsonSerializable
 {
@@ -16,7 +16,7 @@ abstract class DomainEntity implements \JsonSerializable
      * @ORM\Column(type="string", unique=true)
      * @ORM\GeneratedValue(strategy="NONE")
      */
-    protected $id;
+    protected string $id;
 
     public function __construct(Id $id)
     {

@@ -9,9 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity()
+ * @ORM\Table(name="products")
  * @property string name
  * @property float weight
- * @property float distance
  */
 class Product extends DomainEntity implements \JsonSerializable
 {
@@ -20,28 +20,21 @@ class Product extends DomainEntity implements \JsonSerializable
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $weight;
-
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $distance;
+    private float $weight;
 
     public function __construct(
         string $name,
-        float $weight,
-        float $distance
+        float $weight
     )
     {
         parent::__construct(new Id());
         $this->name = $name;
         $this->weight = $weight;
-        $this->distance = $distance;
 
     }
 
@@ -69,30 +62,17 @@ class Product extends DomainEntity implements \JsonSerializable
         return $this;
     }
 
-    public function getDistance(): ?float
-    {
-        return $this->distance;
-    }
-
-    public function setDistance(float $distance): self
-    {
-        $this->distance = $distance;
-
-        return $this;
-    }
-
     protected function serialize(): array
     {
         return [
             'id',
             'name',
-            'weight',
-            'distance'
+            'weight'
         ];
     }
 
     public function calculateWeightDistance(): float
     {
-        return $this->weight * $this->distance;
+        return $this->weight * 1; #distance
     }
 }

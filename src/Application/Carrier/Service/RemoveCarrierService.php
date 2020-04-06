@@ -11,7 +11,7 @@ use App\Infrastructure\Carrier\Repository\DoctrineCarrierRepository;
  */
 class RemoveCarrierService
 {
-    private $repository;
+    private DoctrineCarrierRepository $repository;
 
     public function __construct(DoctrineCarrierRepository $repository)
     {

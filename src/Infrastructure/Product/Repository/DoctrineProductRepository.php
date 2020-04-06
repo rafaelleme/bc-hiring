@@ -18,9 +18,9 @@ class DoctrineProductRepository implements ProductRepository
 {
     private $entity = Product::class;
 
-    private $repository;
+    private EntityRepository $repository;
 
-    private $em;
+    private EntityManager $em;
 
     public function __construct(EntityManager $em)
     {

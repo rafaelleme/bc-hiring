@@ -13,8 +13,8 @@ use App\Infrastructure\Product\Repository\DoctrineProductRepository;
  */
 class ListCostService
 {
-    private $carrierRepository;
-    private $productRepository;
+    private DoctrineCarrierRepository $carrierRepository;
+    private DoctrineProductRepository $productRepository;
 
     public function __construct(
         DoctrineCarrierRepository $carrierRepository,

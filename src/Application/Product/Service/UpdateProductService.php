@@ -12,7 +12,7 @@ use App\Infrastructure\Product\Repository\DoctrineProductRepository;
  */
 class UpdateProductService
 {
-    private $repository;
+    private DoctrineProductRepository $repository;
 
     public function __construct(DoctrineProductRepository $repository)
     {
@@ -26,11 +26,9 @@ class UpdateProductService
 
         $name = $request->getName();
         $weight = $request->getWeight();
-        $distance = $request->getDistance();
 
         $product->setName($name);
         $product->setWeight($weight);
-        $product->setDistance($distance);
 
         return $this->repository->persist($product);
     }

@@ -11,7 +11,7 @@ use App\Infrastructure\Product\Repository\DoctrineProductRepository;
  */
 class RemoveProductService
 {
-    private $repository;
+    private DoctrineProductRepository $repository;
 
     public function __construct(DoctrineProductRepository $repository)
     {

@@ -17,7 +17,6 @@ class ProductRequest
 
     private $name;
     private $weight;
-    private $distance;
 
     public function getName(): string
     {
@@ -27,10 +26,5 @@ class ProductRequest
     public function getWeight(): float
     {
         return $this->weight;
-    }
-
-    public function getDistance(): float
-    {
-        return $this->distance;
     }
 }

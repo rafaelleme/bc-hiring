@@ -11,7 +11,7 @@ use App\Infrastructure\Product\Repository\DoctrineProductRepository;
  */
 class CreateProductService
 {
-    private $repository;
+    private DoctrineProductRepository $repository;
 
     public function __construct(DoctrineProductRepository $repository)
     {
@@ -22,12 +22,10 @@ class CreateProductService
     {
         $name = $request->getName();
         $weight = $request->getWeight();
-        $distance = $request->getDistance();
 
         $product = new Product(
             $name,
-            $weight,
-            $distance
+            $weight
         );
 
         $product = $this->repository->persist($product);

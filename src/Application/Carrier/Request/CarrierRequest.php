@@ -6,29 +6,23 @@ use App\Application\Shared\Request\JsonRequest;
 
 /**
  * @property string name
- * @property float fixValue
- * @property float valueDistanceKilo
+ * @property array configs
  */
 class CarrierRequest
 {
     use JsonRequest;
 
     private $name;
-    private $fixValue;
-    private $valueDistanceKilo;
+    private $configs;
 
     public function getName(): string
     {
         return $this->name;
     }
 
-    public function getFixValue(): float
+    public function getConfigs(): array
     {
-        return $this->fixValue;
+        return $this->configs;
     }
 
-    public function getValueDistanceKilo(): float
-    {
-        return $this->valueDistanceKilo;
-    }
 }
