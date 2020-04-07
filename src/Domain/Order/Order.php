@@ -5,6 +5,7 @@ namespace App\Domain\Order;
 use App\Domain\Carrier\Carrier;
 use App\Domain\Product\Product;
 use App\Domain\Shared\Entity\DomainEntity;
+use App\Domain\Shared\Vo\Id;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -32,6 +33,18 @@ class Order extends DomainEntity implements \JsonSerializable
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
      */
     protected Product $product;
+
+    public function __construct(
+        float $distance,
+        Carrier $carrier,
+        Product $product
+    )
+    {
+        parent::__construct(new Id());
+        $this->distance = $distance;
+        $this->carrier = $carrier;
+        $this->product = $product;
+    }
 
     /**
      * @return float

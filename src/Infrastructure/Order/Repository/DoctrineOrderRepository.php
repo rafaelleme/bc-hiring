@@ -7,6 +7,7 @@ use App\Domain\Order\Repository\OrderRepository;
 use App\Domain\Shared\Vo\Id;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Exception;
 
 /**
  * @property mixed entity
@@ -39,5 +40,16 @@ class DoctrineOrderRepository implements OrderRepository
     {
         return $this->repository
             ->find($id->getValue());
+    }
+
+    public function persist(Order $order): Order
+    {
+        try {
+            $this->em->persist($order);
+            $this->em->flush();
+            return $order;
+        } catch (Exception $e) {
+            throw new Exception(sprintf('It was not possible to persist given. An error has occurred %s', $e->getMessage()));
+        }
     }
 }
