@@ -4,6 +4,7 @@ namespace App\Application\Carrier\Service;
 
 use App\Application\Carrier\Request\CarrierRequest;
 use App\Domain\Carrier\Carrier;
+use App\Domain\Carrier\CarrierConfig;
 use App\Infrastructure\Carrier\Repository\DoctrineCarrierRepository;
 
 /**
@@ -11,7 +12,7 @@ use App\Infrastructure\Carrier\Repository\DoctrineCarrierRepository;
  */
 class CreateCarrierService
 {
-    private $repository;
+    private DoctrineCarrierRepository $repository;
 
     public function __construct(DoctrineCarrierRepository $repository)
     {
@@ -21,14 +22,21 @@ class CreateCarrierService
     public function __invoke(CarrierRequest $request): ?Carrier
     {
         $name = $request->getName();
-        $fixValue = $request->getFixValue();
-        $valueDistanceKilo = $request->getValueDistanceKilo();
+        $configs = $request->getConfigs();
 
-        $carrier = new Carrier(
-            $name,
-            $fixValue,
-            $valueDistanceKilo
-        );
+        $carrier = new Carrier($name);
+
+        foreach ($configs as $config) {
+            $carrierConfig = new CarrierConfig(
+                $config->minWeight,
+                $config->maxWeight,
+                $config->fixValue,
+                $config->valueDistanceKilo,
+            );
+            $carrierConfig->setCarrier($carrier);
+
+            $carrier->addConfig($carrierConfig);
+        }
 
         $carrier = $this->repository->persist($carrier);
 

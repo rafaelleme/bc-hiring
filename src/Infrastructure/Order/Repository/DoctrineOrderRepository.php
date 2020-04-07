@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Infrastructure\Product\Repository;
+namespace App\Infrastructure\Order\Repository;
 
-use App\Domain\Product\Product;
-use App\Domain\Product\Repository\ProductRepository;
+use App\Domain\Order\Order;
+use App\Domain\Order\Repository\OrderRepository;
 use App\Domain\Shared\Vo\Id;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -11,12 +11,12 @@ use Exception;
 
 /**
  * @property mixed entity
- * @property EntityManager em
  * @property EntityRepository repository
+ * @property EntityManager em
  */
-class DoctrineProductRepository implements ProductRepository
+class DoctrineOrderRepository implements OrderRepository
 {
-    private $entity = Product::class;
+    protected $entity = Order::class;
 
     private EntityRepository $repository;
 
@@ -42,29 +42,14 @@ class DoctrineProductRepository implements ProductRepository
             ->find($id->getValue());
     }
 
-    /**
-     * @param Product $product
-     * @return Product
-     * @throws Exception
-     */
-    public function persist(Product $product): Product
+    public function persist(Order $order): Order
     {
         try {
-            $this->em->persist($product);
+            $this->em->persist($order);
             $this->em->flush();
-            return $product;
+            return $order;
         } catch (Exception $e) {
             throw new Exception(sprintf('It was not possible to persist given. An error has occurred %s', $e->getMessage()));
-        }
-    }
-
-    public function remove(Product $product): void
-    {
-        try {
-            $this->em->remove($product);
-            $this->em->flush();
-        } catch (\Throwable $throwable) {
-            throw new \Exception($throwable->getMessage());
         }
     }
 }

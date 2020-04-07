@@ -4,46 +4,35 @@ namespace App\Domain\Carrier;
 
 use App\Domain\Product\Product;
 use App\Domain\Shared\Entity\DomainEntity;
-use App\Domain\Shared\Entity\EntitySerializer;
 use App\Domain\Shared\Vo\Id;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity()
+ * @ORM\Table(name="carriers")
  * @property string name
- * @property float fixValue
- * @property float valueDistanceKilo
+ * @property CarrierConfig config
+ * @property ArrayCollection configs
  */
 class Carrier extends DomainEntity implements \JsonSerializable
 {
-    use EntitySerializer;
-
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $name;
+    private string $name;
 
     /**
-     * @ORM\Column(type="float",name="fix_value")
+     * @ORM\OneToMany(targetEntity="CarrierConfig", mappedBy="carrier", cascade={"persist"})
      */
-    private $fixValue;
+    protected Collection $configs;
 
-    /**
-     * @ORM\Column(type="float",name="value_distance_kilo")
-     */
-    private $valueDistanceKilo;
-
-    public function __construct(
-        string $name,
-        float $fixValue,
-        float $valueDistanceKilo
-    )
+    public function __construct(string $name)
     {
         parent::__construct(new Id());
         $this->name = $name;
-        $this->fixValue = $fixValue;
-        $this->valueDistanceKilo = $valueDistanceKilo;
-
+        $this->configs = new ArrayCollection();
     }
 
     public function getName(): ?string
@@ -58,47 +47,47 @@ class Carrier extends DomainEntity implements \JsonSerializable
         return $this;
     }
 
-    public function getFixValue(): ?float
+    public function setConfig(CarrierConfig $carrierConfig): self
     {
-        return $this->fixValue;
-    }
-
-    public function setFixValue(float $fixValue): self
-    {
-        $this->fixValue = $fixValue;
-
+        $this->config = $carrierConfig;
         return $this;
     }
 
-    public function getValueDistanceKilo(): ?float
+    public function getConfig(): CarrierConfig
     {
-        return $this->valueDistanceKilo;
+        return $this->config;
     }
 
-    public function setValueDistanceKilo(float $valueDistanceKilo): self
+    public function getConfigs()
     {
-        $this->valueDistanceKilo = $valueDistanceKilo;
+        return $this->configs;
+    }
 
+    public function addConfig(CarrierConfig $config): self
+    {
+        $this->configs->add($config);
         return $this;
-    }
-
-    protected function serialize(): array
-    {
-        return [
-            'id',
-            'name',
-            'fixValue',
-            'valueDistanceKilo'
-        ];
     }
 
     public function calculateCost(Product $product): float
     {
-        return $this->fixValue + $this->calculateValueDistanceKilo($product->calculateWeightDistance());
+        return 1; #$this->fixValue + $this->calculateValueDistanceKilo($product->calculateWeightDistance());
     }
 
     private function calculateValueDistanceKilo(float $weightDistance): float
     {
-        return $this->valueDistanceKilo * $weightDistance;
+        return 1; #$this->valueDistanceKilo * $weightDistance;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'configs' => $this->getConfigs()->toArray()
+        ];
     }
 }

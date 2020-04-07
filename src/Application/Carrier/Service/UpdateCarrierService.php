@@ -12,7 +12,7 @@ use App\Infrastructure\Carrier\Repository\DoctrineCarrierRepository;
  */
 class UpdateCarrierService
 {
-    private $repository;
+    private DoctrineCarrierRepository $repository;
 
     public function __construct(DoctrineCarrierRepository $repository)
     {
@@ -25,12 +25,8 @@ class UpdateCarrierService
         $carrier = $this->repository->findById(new Id($id));
 
         $name = $request->getName();
-        $fixValue = $request->getFixValue();
-        $valueDistanceKilo = $request->getValueDistanceKilo();
 
         $carrier->setName($name);
-        $carrier->setFixValue($fixValue);
-        $carrier->setValueDistanceKilo($valueDistanceKilo);
 
         return $this->repository->persist($carrier);
     }
