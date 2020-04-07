@@ -2,6 +2,8 @@
 
 namespace App\Application\Shared\Controller\api;
 
+use App\Application\Order\Request\OrderRequest;
+use App\Application\Order\Service\CreateOrderService;
 use App\Application\Order\Service\ListCostService;
 use App\Infrastructure\Order\Repository\DoctrineOrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -48,5 +50,23 @@ class OrderController extends AbstractController
             $list = $service();
 
         return $this->json($list, 200);
+    }
+
+    /**
+     * @param Request $request
+     * @param CreateOrderService $service
+     * @return JsonResponse
+     * @Route("/order", name="order_store", methods={"POST"})
+     */
+    public function store(Request $request, CreateOrderService $service)
+    {
+        $order = null;
+
+        $data = OrderRequest::fromBody($request);
+
+        if (is_callable($service))
+            $order = call_user_func($service, $data);
+
+        return $this->json($order, 201);
     }
 }
